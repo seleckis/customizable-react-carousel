@@ -1,33 +1,30 @@
 var webpack = require('webpack');
-var path = require('path');
 
-var BUILD_DIR = path.resolve(__dirname, 'dist');
-var APP_DIR = path.resolve(__dirname, 'example');
-
-var config = {
-  devtool: 'cheap-module-eval-source-map',
-  entry: APP_DIR + '/index.jsx',
-  output: {
-    path: BUILD_DIR,
-    filename: '/js/bundle.js'
-  },
-  module: {
-    loaders: [
-	    {
-	      test: /\.jsx?/,
-	      exclude: /node_modules/,
-	      loader: 'babel'
-	    },
-	    {
-	      test: /\.json/,
-	      exclude: /node_modules/,
-	      loader: 'json'
-	    },
-	  ]
-  },
-  resolve: {
-    extensions: ['', '.js', '.jsx']
-  },
+module.exports = {
+	devtool: 'cheap-module-eval-source-map',
+	entry: [
+		'./example/src/index.jsx'
+	],
+	module: {
+		loaders: [
+			{
+				test: /\.jsx?$/,
+				exclude: /node_modules/,
+				loader: 'eslint!babel'
+			}
+		]
+	},
+	resolve: {
+		extensions: ['', '.js', '.jsx'],
+		modulesDirectories: ['node_modules']
+	},
+	output: {
+		path: __dirname + '/example/dist/',
+		publicPath: '/',
+		filename: 'bundle.js'
+	},
+	plugins: [
+		new webpack.optimize.OccurenceOrderPlugin(),
+		new webpack.NoErrorsPlugin()
+	],
 };
-
-module.exports = config;

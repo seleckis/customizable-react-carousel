@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 
-import { Carousel, CarouselNav, CarouselButton, CarouselList } from '../src';
+import { Carousel, CarouselNav, CarouselButton, CarouselList } from '../../lib';
 import data from './data';
 
 const Slider = ({ children }) => (
