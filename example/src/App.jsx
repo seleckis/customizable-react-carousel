@@ -10,16 +10,27 @@ const Slider = ({ children }) => (
 	</div>
 );
 
-const SliderList = ({ children }) => (
-	<div className="slider-list">
-		{children}
-	</div>
-);
+const SliderList = styled.div`
+	display: flex;
+`;
 
-const SliderListItem = ({ keyId, activeKey, value }) => (
-	<div className={keyId!==activeKey ? "slider-list-item":"slider-list-item-active"}>
-		{value}
-	</div>
+const SliderItem = styled.div`
+	height: 100px;
+	text-align: center;
+	line-height: 100px;
+	flex: 0 0 100%;
+	border: 5px solid #eee;
+	box-sizing: border-box;
+	margin-right: -100%;
+	transition: transform .25s ease-in-out, opacity .25s ease-in-out;
+	transform: translate3d(${props => props.isActive ? `0%` : props.isNextAfterActive ? `100%` : `-100%`}, 0, 0);
+	opacity: ${props => props.isActive ? 1 : 0};
+`;
+
+const SliderListItem = ({ keyId, activeKey, data }) => (
+	<SliderItem isActive={keyId === activeKey} isNextAfterActive={keyId > activeKey}>
+		{data.value}
+	</SliderItem>
 );
 
 const SliderNav = ({ children }) => (
