@@ -11,24 +11,19 @@ const Slider = ({ children }) => (
 );
 
 const SliderList = styled.div`
-	display: flex;
+	overflow: hidden;
 `;
 
 const SliderItem = styled.div`
 	height: 100px;
 	text-align: center;
 	line-height: 100px;
-	flex: 0 0 100%;
 	border: 5px solid #eee;
 	box-sizing: border-box;
-	margin-right: -100%;
-	transition: transform .25s ease-in-out, opacity .25s ease-in-out;
-	transform: translate3d(${props => props.isActive ? `0%` : props.isNextAfterActive ? `100%` : `-100%`}, 0, 0);
-	opacity: ${props => props.isActive ? 1 : 0};
 `;
 
 const SliderListItem = ({ keyId, activeKey, data }) => (
-	<SliderItem isActive={keyId === activeKey} isNextAfterActive={keyId > activeKey}>
+	<SliderItem isActive={keyId === activeKey} isAfterActive={keyId > activeKey}>
 		{data.value}
 	</SliderItem>
 );
@@ -79,7 +74,7 @@ export default class App extends Component {
 				<h1>Customizable React Carousel Example</h1>
 				<p>A set of React components to build customizable carousel</p>
 				<div className="content">
-					<Carousel data={data} container={Slider}>
+					<Carousel data={data} container={Slider} swipeable>
 						<CarouselNav container={SliderNav} component={SliderNavItem} />
 						<CarouselList container={SliderList} component={SliderListItem} />
 						<CarouselButtons container={SliderButtons} component={SliderButtonsItem} />

@@ -1,17 +1,32 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
+import SwipeableViews from 'react-swipeable-views';
 
-export const List = ({ container: Container, component: Component, items, ...restProps }) => (
-	<Container {...restProps}>
-		{items.map((itemData, keyId)=>
-			React.createElement(Component, {
-				...restProps,
-				key: keyId,
-				keyId: keyId,
-				data: itemData
-			})
-		)}
-	</Container>
-);
+export class List extends Component{
+	static propTypes = {
+		container: PropTypes.func,
+		component: PropTypes.func,
+		items: PropTypes.array,
+		activateByKey: PropTypes.func
+	};
+	constructor(props){
+		super(props);
+	}
+	handleChangeIndex = (index) => {
+		this.props.activateByKey(index);
+	};
+	render() {
+		const { container: Container, component: Component, items, activeKey, ...restProps } = this.props;
+		return (
+			<Container {...restProps}>
+				<SwipeableViews index={activeKey} onChangeIndex={this.handleChangeIndex}>
+				{items.map((itemData, keyId)=>(
+					<Component { ...restProps } key={keyId} keyId={keyId} data={itemData} />
+				))}
+				</SwipeableViews>
+			</Container>
+		);
+	}
+}
 
 export const Nav = ({
 	container: Container, component: Component, labels, items, noLabels, ...restProps
@@ -59,23 +74,3 @@ export const Buttons = ({
 		</Container>
 	)
 };
-//
-// export const Button = ({ component, dir, activeKey, activateByKey, count, children }) => {
-// 	return React.createElement(component, {
-// 		futureKey:
-// 			dir==='next' ?
-// 				activeKey + 1
-// 			:
-// 				dir==='prev' ?
-// 					activeKey - 1
-// 				:
-// 					activeKey,
-// 		activateByKey: activateByKey,
-// 		next: dir === 'next',
-// 		prev: dir === 'prev',
-// 		dir: dir,
-// 		children: children,
-// 		disabled: (activeKey === 0 && dir === 'prev') || (activeKey === count - 1 && dir === 'next')
-// 	});
-//
-// }
