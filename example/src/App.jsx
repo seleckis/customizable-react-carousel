@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 
-import { Carousel, CarouselNav, CarouselButton, CarouselList } from '../../lib';
+import { Carousel, CarouselNav, CarouselButtons, CarouselList } from '../../src';
 import data from './data';
 
 const Slider = ({ children }) => (
@@ -41,6 +41,9 @@ const SliderNavItem = ({ data, activateByKey, keyId, activeKey }) => (
 	</SliderNavButton>
 );
 
+const SliderButtons = styled.div/*styledcss*/`
+	display: block;
+`;
 const SliderSideButton = styled.button/*styledcss*/`
     background: ${props => props.disabled ? `grey` : `green`};
     border-radius: 3px;
@@ -48,9 +51,9 @@ const SliderSideButton = styled.button/*styledcss*/`
     color: white;
 `;
 
-const SliderButton = ({ disabled, children, activateByKey, futureKey }) => (
+const SliderButtonsItem = ({ disabled, activateByKey, futureKey, dir }) => (
 	<SliderSideButton disabled={disabled} onClick={activateByKey.bind(null, futureKey)}>
-		{children}
+		{dir}
 	</SliderSideButton>
 );
 
@@ -59,6 +62,7 @@ export default class App extends Component {
     super(props);
   }
 	render(){
+		// console.log(CarouselButtons);
 		return (
 			<div className="root">
 				<h1>Customizable React Carousel Example</h1>
@@ -67,8 +71,7 @@ export default class App extends Component {
 					<Carousel data={data} container={Slider}>
 						<CarouselNav container={SliderNav} component={SliderNavItem} />
 						<CarouselList container={SliderList} component={SliderListItem} />
-						<CarouselButton dir="prev" component={SliderButton}>PREV</CarouselButton>
-						<CarouselButton dir="next" component={SliderButton}>NEXT</CarouselButton>
+						<CarouselButtons container={SliderButtons} component={SliderButtonsItem} />
 					</Carousel>
 				</div>
 			</div>

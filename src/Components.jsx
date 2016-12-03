@@ -31,22 +31,51 @@ export const Nav = ({
 	)
 };
 
-export const Button = ({ component, dir, activeKey, activateByKey, count, children }) => {
-	return React.createElement(component, {
-		futureKey:
-			dir==='next' ?
-				activeKey + 1
-			:
-				dir==='prev' ?
-					activeKey - 1
-				:
-					activeKey,
-		activateByKey: activateByKey,
-		next: dir === 'next',
-		prev: dir === 'prev',
-		dir: dir,
-		children: children,
-		disabled: (activeKey === 0 && dir === 'prev') || (activeKey === count - 1 && dir === 'next')
-	});
-
-}
+export const Buttons = ({
+	container: Container, component: Component, activeKey, activateByKey, count, ...restProps
+}) => {
+	return (
+		<Container {...restProps}>
+			{["prev", "next"].map((dir, keyId)=>
+				React.createElement(Component, {
+					...restProps,
+					key: keyId,
+					keyId: keyId,
+					futureKey:
+						dir==='next' ?
+							activeKey + 1
+						:
+							dir==='prev' ?
+								activeKey - 1
+							:
+								activeKey,
+					activateByKey: activateByKey,
+					next: dir === 'next',
+					prev: dir === 'prev',
+					dir: dir,
+					disabled: (activeKey === 0 && dir === 'prev') || (activeKey === count - 1 && dir === 'next')
+				})
+			)}
+		</Container>
+	)
+};
+//
+// export const Button = ({ component, dir, activeKey, activateByKey, count, children }) => {
+// 	return React.createElement(component, {
+// 		futureKey:
+// 			dir==='next' ?
+// 				activeKey + 1
+// 			:
+// 				dir==='prev' ?
+// 					activeKey - 1
+// 				:
+// 					activeKey,
+// 		activateByKey: activateByKey,
+// 		next: dir === 'next',
+// 		prev: dir === 'prev',
+// 		dir: dir,
+// 		children: children,
+// 		disabled: (activeKey === 0 && dir === 'prev') || (activeKey === count - 1 && dir === 'next')
+// 	});
+//
+// }
