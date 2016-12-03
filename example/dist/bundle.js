@@ -14975,7 +14975,8 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _templateObject = _taggedTemplateLiteral(['\n    background: ', ';\n    border-radius: 3px;\n    border: none;\n    color: white;\n'], ['\n    background: ', ';\n    border-radius: 3px;\n    border: none;\n    color: white;\n']);
+	var _templateObject = _taggedTemplateLiteral(['\n    background: ', ';\n    border-radius: 3px;\n    border: none;\n    color: white;\n'], ['\n    background: ', ';\n    border-radius: 3px;\n    border: none;\n    color: white;\n']),
+	    _templateObject2 = _taggedTemplateLiteral(['\n\tdisplay: block;\n'], ['\n\tdisplay: block;\n']);
 	
 	var _react = __webpack_require__(/*! react */ 4);
 	
@@ -14985,7 +14986,7 @@
 	
 	var _styledComponents2 = _interopRequireDefault(_styledComponents);
 	
-	var _lib = __webpack_require__(/*! ../../lib */ 121);
+	var _src = __webpack_require__(/*! ../../src */ 262);
 	
 	var _data = __webpack_require__(/*! ./data */ 117);
 	
@@ -15055,19 +15056,20 @@
 		);
 	};
 	
+	var SliderButtons = _styledComponents2.default.div /*styledcss*/(_templateObject2);
 	var SliderSideButton = _styledComponents2.default.button /*styledcss*/(_templateObject, function (props) {
 		return props.disabled ? 'grey' : 'green';
 	});
 	
-	var SliderButton = function SliderButton(_ref6) {
+	var SliderButtonsItem = function SliderButtonsItem(_ref6) {
 		var disabled = _ref6.disabled,
-		    children = _ref6.children,
 		    activateByKey = _ref6.activateByKey,
-		    futureKey = _ref6.futureKey;
+		    futureKey = _ref6.futureKey,
+		    dir = _ref6.dir;
 		return _react2.default.createElement(
 			SliderSideButton,
 			{ disabled: disabled, onClick: activateByKey.bind(null, futureKey) },
-			children
+			dir
 		);
 	};
 	
@@ -15083,6 +15085,7 @@
 		_createClass(App, [{
 			key: 'render',
 			value: function render() {
+				// console.log(CarouselButtons);
 				return _react2.default.createElement(
 					'div',
 					{ className: 'root' },
@@ -15100,20 +15103,11 @@
 						'div',
 						{ className: 'content' },
 						_react2.default.createElement(
-							_lib.Carousel,
+							_src.Carousel,
 							{ data: _data2.default, container: Slider },
-							_react2.default.createElement(_lib.CarouselNav, { container: SliderNav, component: SliderNavItem }),
-							_react2.default.createElement(_lib.CarouselList, { container: SliderList, component: SliderListItem }),
-							_react2.default.createElement(
-								_lib.CarouselButton,
-								{ dir: 'prev', component: SliderButton },
-								'PREV'
-							),
-							_react2.default.createElement(
-								_lib.CarouselButton,
-								{ dir: 'next', component: SliderButton },
-								'NEXT'
-							)
+							_react2.default.createElement(_src.CarouselNav, { container: SliderNav, component: SliderNavItem }),
+							_react2.default.createElement(_src.CarouselList, { container: SliderList, component: SliderListItem }),
+							_react2.default.createElement(_src.CarouselButtons, { container: SliderButtons, component: SliderButtonsItem })
 						)
 					)
 				);
@@ -15180,340 +15174,9 @@
 	_reactDom2.default.render(_react2.default.createElement(_App2.default, null), document.getElementById('app'));
 
 /***/ },
-/* 119 */
-/*!*************************!*\
-  !*** ./lib/Carousel.js ***!
-  \*************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
-	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _extends = Object.assign || function (target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = arguments[i];for (var key in source) {
-				if (Object.prototype.hasOwnProperty.call(source, key)) {
-					target[key] = source[key];
-				}
-			}
-		}return target;
-	};
-	
-	var _createClass = function () {
-		function defineProperties(target, props) {
-			for (var i = 0; i < props.length; i++) {
-				var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-			}
-		}return function (Constructor, protoProps, staticProps) {
-			if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-		};
-	}();
-	
-	var _react = __webpack_require__(/*! react */ 4);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : { default: obj };
-	}
-	
-	function _objectWithoutProperties(obj, keys) {
-		var target = {};for (var i in obj) {
-			if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
-		}return target;
-	}
-	
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) {
-			throw new TypeError("Cannot call a class as a function");
-		}
-	}
-	
-	function _possibleConstructorReturn(self, call) {
-		if (!self) {
-			throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-		}return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
-	}
-	
-	function _inherits(subClass, superClass) {
-		if (typeof superClass !== "function" && superClass !== null) {
-			throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
-		}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-	}
-	
-	// import Swipeable from 'react-swipeable';
-	
-	var Carousel = function (_Component) {
-		_inherits(Carousel, _Component);
-	
-		function Carousel(props) {
-			_classCallCheck(this, Carousel);
-	
-			var _this = _possibleConstructorReturn(this, (Carousel.__proto__ || Object.getPrototypeOf(Carousel)).call(this, props));
-	
-			_this.state = {
-				activeKey: _this.props.activeKey || 0,
-				itemsCount: 0,
-				// dragDelta: false,
-				defKey: 0
-			};
-			_this.activateByKey = _this.activateByKey.bind(_this);
-			return _this;
-		}
-		// swipingLeft(e, delta){
-		// 	this.setState({
-		// 		dragDelta: -delta
-		// 	});
-		// }
-		// swipingRight(e, delta){
-		// 	this.setState({
-		// 		dragDelta: delta
-		// 	});
-		// }
-		// resetDragDelta(){
-		// 	this.setState({
-		// 		dragDelta: false
-		// 	});
-		// }
-		// swipedLeft(e, delta){
-		// 	if(delta > this.swipeThreshold){
-		// 		this.setState({
-		// 			activeKey: (this.state.activeKey + 1) >= this.state.itemsCount ? this.state.activeKey : this.state.activeKey + 1
-		// 		});
-		// 	}
-		// 	this.resetDragDelta();
-		// }
-		// swipedRight(e, delta){
-		// 	if(Math.abs(delta) > this.swipeThreshold){
-		// 		this.setState({
-		// 			activeKey: (this.state.activeKey - 1) < 0 ? this.state.activeKey : this.state.activeKey - 1
-		// 		});
-		// 	}
-		// 	this.resetDragDelta();
-		// }
-	
-	
-		_createClass(Carousel, [{
-			key: 'componentWillMount',
-			value: function componentWillMount() {
-				this.setState({
-					itemsCount: this.props.data.length
-				});
-			}
-		}, {
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				this.activateByKey(this.state.activeKey, null);
-			}
-		}, {
-			key: 'activateByKey',
-			value: function activateByKey(key, e) {
-				this.setState({
-					activeKey: key < this.state.itemsCount ? key >= 0 ? key : this.state.itemsCount - 1 : 0
-				});
-				if (this.props.handleSwitch) {
-					this.props.handleSwitch(e, key);
-				}
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				var _this2 = this;
-	
-				var _props = this.props,
-				    Container = _props.container,
-				    children = _props.children,
-				    data = _props.data,
-				    propLabel = _props.propLabel,
-				    propValue = _props.propValue,
-				    restProps = _objectWithoutProperties(_props, ['container', 'children', 'data', 'propLabel', 'propValue']);
-	
-				var labels = propLabel ? data.map(function (item) {
-					return item[propLabel] || item.label;
-				}) : null;
-				var values = propValue ? data.map(function (item) {
-					return item[propValue] || item.value;
-				}) : data;
-	
-				children = Array.isArray(children) ? children : [children];
-	
-				var container = _react2.default.createElement(Container, restProps, _react2.default.Children.map(children, function (child) {
-					return _react2.default.cloneElement(child, _extends({}, restProps, {
-						activateByKey: _this2.activateByKey,
-						activeKey: _this2.state.activeKey,
-						noLabels: !propLabel,
-						count: values.length,
-						labels: labels,
-						items: values
-					}));
-				}));
-				return container;
-				// return swipeable ?
-				// 	(<Swipeable
-				// 		onSwipingLeft={this.swipingLeft}
-				// 		onSwipingRight={this.swipingRight}
-				// 		onSwipedLeft={this.swipedLeft}
-				// 		onSwipedRight={this.swipedRight}>
-				// 		{container}
-				// 	</Swipeable>)
-				// : container;
-			}
-		}]);
-	
-		return Carousel;
-	}(_react.Component);
-	
-	Carousel.swipeThreshold = 64;
-	exports.default = Carousel;
-	process.env.NODE_ENV !== "production" ? Carousel.propTypes = {
-		data: _react.PropTypes.array.isRequired,
-		propLabel: _react.PropTypes.string,
-		propValue: _react.PropTypes.string,
-		children: _react.PropTypes.oneOfType([_react.PropTypes.element, _react.PropTypes.array])
-	} : void 0;
-	module.exports = exports['default'];
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 1)))
-
-/***/ },
-/* 120 */
-/*!***************************!*\
-  !*** ./lib/Components.js ***!
-  \***************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.Button = exports.Nav = exports.List = undefined;
-	
-	var _extends = Object.assign || function (target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = arguments[i];for (var key in source) {
-				if (Object.prototype.hasOwnProperty.call(source, key)) {
-					target[key] = source[key];
-				}
-			}
-		}return target;
-	};
-	
-	var _react = __webpack_require__(/*! react */ 4);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : { default: obj };
-	}
-	
-	function _objectWithoutProperties(obj, keys) {
-		var target = {};for (var i in obj) {
-			if (keys.indexOf(i) >= 0) continue;if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;target[i] = obj[i];
-		}return target;
-	}
-	
-	var List = exports.List = function List(_ref) {
-		var Container = _ref.container,
-		    Component = _ref.component,
-		    items = _ref.items,
-		    restProps = _objectWithoutProperties(_ref, ["container", "component", "items"]);
-	
-		return _react2.default.createElement(Container, restProps, items.map(function (itemData, keyId) {
-			return _react2.default.createElement(Component, _extends({}, restProps, {
-				key: keyId,
-				keyId: keyId,
-				data: itemData
-			}));
-		}));
-	};
-	
-	var Nav = exports.Nav = function Nav(_ref2) {
-		var Container = _ref2.container,
-		    Component = _ref2.component,
-		    labels = _ref2.labels,
-		    items = _ref2.items,
-		    noLabels = _ref2.noLabels,
-		    restProps = _objectWithoutProperties(_ref2, ["container", "component", "labels", "items", "noLabels"]);
-	
-		labels = noLabels ? items : labels;
-		return _react2.default.createElement(Container, restProps, labels.map(function (data, keyId) {
-			return _react2.default.createElement(Component, _extends({}, restProps, {
-				key: keyId,
-				keyId: keyId,
-				data: data
-			}));
-		}));
-	};
-	
-	var Button = exports.Button = function Button(_ref3) {
-		var component = _ref3.component,
-		    dir = _ref3.dir,
-		    activeKey = _ref3.activeKey,
-		    activateByKey = _ref3.activateByKey,
-		    count = _ref3.count,
-		    children = _ref3.children;
-	
-		return _react2.default.createElement(component, {
-			futureKey: dir === "next" ? activeKey + 1 : dir === "prev" ? activeKey - 1 : activeKey,
-			activateByKey: activateByKey,
-			next: dir === "next",
-			prev: dir === "prev",
-			children: children,
-			disabled: activeKey === 0 && dir === 'prev' || activeKey === count - 1 && dir === 'next'
-		});
-	};
-
-/***/ },
-/* 121 */
-/*!**********************!*\
-  !*** ./lib/index.js ***!
-  \**********************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.CarouselList = exports.CarouselButton = exports.CarouselNav = exports.Carousel = undefined;
-	
-	var _Components = __webpack_require__(/*! ./Components */ 120);
-	
-	Object.defineProperty(exports, 'CarouselNav', {
-	  enumerable: true,
-	  get: function get() {
-	    return _Components.Nav;
-	  }
-	});
-	Object.defineProperty(exports, 'CarouselButton', {
-	  enumerable: true,
-	  get: function get() {
-	    return _Components.Button;
-	  }
-	});
-	Object.defineProperty(exports, 'CarouselList', {
-	  enumerable: true,
-	  get: function get() {
-	    return _Components.List;
-	  }
-	});
-	
-	var _Carousel2 = __webpack_require__(/*! ./Carousel */ 119);
-	
-	var _Carousel3 = _interopRequireDefault(_Carousel2);
-	
-	function _interopRequireDefault(obj) {
-	  return obj && obj.__esModule ? obj : { default: obj };
-	}
-	
-	exports.Carousel = _Carousel3.default;
-
-/***/ },
+/* 119 */,
+/* 120 */,
+/* 121 */,
 /* 122 */
 /*!********************************!*\
   !*** ./~/fbjs/lib/camelize.js ***!
@@ -31189,6 +30852,327 @@
 	'use strict';
 	module.exports = false;
 
+
+/***/ },
+/* 260 */
+/*!**************************!*\
+  !*** ./src/Carousel.jsx ***!
+  \**************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 4);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	// import Swipeable from 'react-swipeable';
+	
+	var Carousel = function (_Component) {
+		_inherits(Carousel, _Component);
+	
+		function Carousel(props) {
+			_classCallCheck(this, Carousel);
+	
+			var _this = _possibleConstructorReturn(this, (Carousel.__proto__ || Object.getPrototypeOf(Carousel)).call(this, props));
+	
+			_this.state = {
+				activeKey: _this.props.activeKey || 0,
+				itemsCount: 0,
+				// dragDelta: false,
+				defKey: 0
+			};
+			_this.activateByKey = _this.activateByKey.bind(_this);
+			return _this;
+		}
+		// swipingLeft(e, delta){
+		// 	this.setState({
+		// 		dragDelta: -delta
+		// 	});
+		// }
+		// swipingRight(e, delta){
+		// 	this.setState({
+		// 		dragDelta: delta
+		// 	});
+		// }
+		// resetDragDelta(){
+		// 	this.setState({
+		// 		dragDelta: false
+		// 	});
+		// }
+		// swipedLeft(e, delta){
+		// 	if(delta > this.swipeThreshold){
+		// 		this.setState({
+		// 			activeKey: (this.state.activeKey + 1) >= this.state.itemsCount ? this.state.activeKey : this.state.activeKey + 1
+		// 		});
+		// 	}
+		// 	this.resetDragDelta();
+		// }
+		// swipedRight(e, delta){
+		// 	if(Math.abs(delta) > this.swipeThreshold){
+		// 		this.setState({
+		// 			activeKey: (this.state.activeKey - 1) < 0 ? this.state.activeKey : this.state.activeKey - 1
+		// 		});
+		// 	}
+		// 	this.resetDragDelta();
+		// }
+	
+	
+		_createClass(Carousel, [{
+			key: 'componentWillMount',
+			value: function componentWillMount() {
+				this.setState({
+					itemsCount: this.props.data.length
+				});
+			}
+		}, {
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				this.activateByKey(this.state.activeKey, null);
+			}
+		}, {
+			key: 'activateByKey',
+			value: function activateByKey(key, e) {
+				this.setState({
+					activeKey: key < this.state.itemsCount ? key >= 0 ? key : this.state.itemsCount - 1 : 0
+				});
+				if (this.props.handleSwitch) {
+					this.props.handleSwitch(e, key);
+				}
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var _this2 = this;
+	
+				var _props = this.props,
+				    Container = _props.container,
+				    children = _props.children,
+				    data = _props.data,
+				    propLabel = _props.propLabel,
+				    propValue = _props.propValue,
+				    restProps = _objectWithoutProperties(_props, ['container', 'children', 'data', 'propLabel', 'propValue']);
+	
+				var labels = propLabel ? data.map(function (item) {
+					return item[propLabel] || item.label;
+				}) : null;
+				var values = propValue ? data.map(function (item) {
+					return item[propValue] || item.value;
+				}) : data;
+	
+				children = Array.isArray(children) ? children : [children];
+	
+				var container = _react2.default.createElement(
+					Container,
+					restProps,
+					_react2.default.Children.map(children, function (child) {
+						return _react2.default.cloneElement(child, _extends({}, restProps, {
+							activateByKey: _this2.activateByKey,
+							activeKey: _this2.state.activeKey,
+							noLabels: !propLabel,
+							count: values.length,
+							labels: labels,
+							items: values
+						}));
+					})
+				);
+				return container;
+				// return swipeable ?
+				// 	(<Swipeable
+				// 		onSwipingLeft={this.swipingLeft}
+				// 		onSwipingRight={this.swipingRight}
+				// 		onSwipedLeft={this.swipedLeft}
+				// 		onSwipedRight={this.swipedRight}>
+				// 		{container}
+				// 	</Swipeable>)
+				// : container;
+			}
+		}]);
+	
+		return Carousel;
+	}(_react.Component);
+	
+	Carousel.swipeThreshold = 64;
+	exports.default = Carousel;
+	process.env.NODE_ENV !== "production" ? Carousel.propTypes = {
+		data: _react.PropTypes.array.isRequired,
+		propLabel: _react.PropTypes.string,
+		propValue: _react.PropTypes.string,
+		children: _react.PropTypes.oneOfType([_react.PropTypes.element, _react.PropTypes.array])
+	} : void 0;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./~/process/browser.js */ 1)))
+
+/***/ },
+/* 261 */
+/*!****************************!*\
+  !*** ./src/Components.jsx ***!
+  \****************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.Buttons = exports.Nav = exports.List = undefined;
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _react = __webpack_require__(/*! react */ 4);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var List = exports.List = function List(_ref) {
+		var Container = _ref.container,
+		    Component = _ref.component,
+		    items = _ref.items,
+		    restProps = _objectWithoutProperties(_ref, ["container", "component", "items"]);
+	
+		return _react2.default.createElement(
+			Container,
+			restProps,
+			items.map(function (itemData, keyId) {
+				return _react2.default.createElement(Component, _extends({}, restProps, {
+					key: keyId,
+					keyId: keyId,
+					data: itemData
+				}));
+			})
+		);
+	};
+	
+	var Nav = exports.Nav = function Nav(_ref2) {
+		var Container = _ref2.container,
+		    Component = _ref2.component,
+		    labels = _ref2.labels,
+		    items = _ref2.items,
+		    noLabels = _ref2.noLabels,
+		    restProps = _objectWithoutProperties(_ref2, ["container", "component", "labels", "items", "noLabels"]);
+	
+		labels = noLabels ? items : labels;
+		return _react2.default.createElement(
+			Container,
+			restProps,
+			labels.map(function (data, keyId) {
+				return _react2.default.createElement(Component, _extends({}, restProps, {
+					key: keyId,
+					keyId: keyId,
+					data: data
+				}));
+			})
+		);
+	};
+	
+	var Buttons = exports.Buttons = function Buttons(_ref3) {
+		var Container = _ref3.container,
+		    Component = _ref3.component,
+		    activeKey = _ref3.activeKey,
+		    activateByKey = _ref3.activateByKey,
+		    count = _ref3.count,
+		    restProps = _objectWithoutProperties(_ref3, ["container", "component", "activeKey", "activateByKey", "count"]);
+	
+		return _react2.default.createElement(
+			Container,
+			restProps,
+			["prev", "next"].map(function (dir, keyId) {
+				return _react2.default.createElement(Component, _extends({}, restProps, {
+					key: keyId,
+					keyId: keyId,
+					futureKey: dir === 'next' ? activeKey + 1 : dir === 'prev' ? activeKey - 1 : activeKey,
+					activateByKey: activateByKey,
+					next: dir === 'next',
+					prev: dir === 'prev',
+					dir: dir,
+					disabled: activeKey === 0 && dir === 'prev' || activeKey === count - 1 && dir === 'next'
+				}));
+			})
+		);
+	};
+	//
+	// export const Button = ({ component, dir, activeKey, activateByKey, count, children }) => {
+	// 	return React.createElement(component, {
+	// 		futureKey:
+	// 			dir==='next' ?
+	// 				activeKey + 1
+	// 			:
+	// 				dir==='prev' ?
+	// 					activeKey - 1
+	// 				:
+	// 					activeKey,
+	// 		activateByKey: activateByKey,
+	// 		next: dir === 'next',
+	// 		prev: dir === 'prev',
+	// 		dir: dir,
+	// 		children: children,
+	// 		disabled: (activeKey === 0 && dir === 'prev') || (activeKey === count - 1 && dir === 'next')
+	// 	});
+	//
+	// }
+
+/***/ },
+/* 262 */
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.CarouselList = exports.CarouselButtons = exports.CarouselNav = exports.Carousel = undefined;
+	
+	var _Components = __webpack_require__(/*! ./Components */ 261);
+	
+	Object.defineProperty(exports, 'CarouselNav', {
+	  enumerable: true,
+	  get: function get() {
+	    return _Components.Nav;
+	  }
+	});
+	Object.defineProperty(exports, 'CarouselButtons', {
+	  enumerable: true,
+	  get: function get() {
+	    return _Components.Buttons;
+	  }
+	});
+	Object.defineProperty(exports, 'CarouselList', {
+	  enumerable: true,
+	  get: function get() {
+	    return _Components.List;
+	  }
+	});
+	
+	var _Carousel2 = __webpack_require__(/*! ./Carousel */ 260);
+	
+	var _Carousel3 = _interopRequireDefault(_Carousel2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.Carousel = _Carousel3.default;
 
 /***/ }
 /******/ ]);
