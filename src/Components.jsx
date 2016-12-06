@@ -15,10 +15,10 @@ export class List extends Component{
 		this.props.activateByKey(index);
 	};
 	render() {
-		const { container: Container, component: Component, items, activeKey, ...restProps } = this.props;
+		const { container: Container, component: Component, items, activeKey, slideStyle, ...restProps } = this.props;
 		return Container ? (
 			<Container {...restProps}>
-				<SwipeableViews index={activeKey} onChangeIndex={this.handleChangeIndex}>
+				<SwipeableViews index={activeKey} onChangeIndex={this.handleChangeIndex} slideStyle={slideStyle}>
 				{items.map((itemData, keyId) => {
 					return Component ?
 						<Component { ...restProps } key={keyId} keyId={keyId} data={itemData} />

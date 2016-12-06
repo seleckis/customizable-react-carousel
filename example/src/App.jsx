@@ -20,6 +20,7 @@ const SliderItem = styled.div`
 	line-height: 100px;
 	border: 5px solid #eee;
 	box-sizing: border-box;
+	flex-grow: 1;
 `;
 
 const SliderListItem = ({ keyId, activeKey, data }) => (
@@ -74,7 +75,7 @@ export default class App extends Component {
 				<h1>Customizable React Carousel Example</h1>
 				<p>A set of React components to build customizable carousel</p>
 				<div className="content">
-					<Carousel data={data} container={Slider} swipeable>
+					<Carousel data={data} container={Slider} swipeable slideStyle={{ display: "flex" }}>
 						<CarouselNav container={SliderNav} component={SliderNavItem} />
 						<CarouselList container={SliderList} component={SliderListItem} />
 						<CarouselButtons container={SliderButtons} component={SliderButtonsItem} />
