@@ -10,7 +10,6 @@ export default class Carousel extends Component {
 			PropTypes.array
 		])
 	};
-	static swipeThreshold = 64;
 	constructor(props){
 		super(props);
 		this.state = {
@@ -44,19 +43,21 @@ export default class Carousel extends Component {
 
 		children = Array.isArray(children) ? children : [children];
 
-		let container = <Container {...restProps}>
-			{React.Children.map(children, (child) =>{
-				return React.cloneElement(child, {
-					...restProps,
-					activateByKey: this.activateByKey,
-					activeKey: this.state.activeKey,
-					noLabels: !propLabel,
-					count: values.length,
-					labels: labels,
-					items: values
-				})
-			})}
-		</Container>;
+		let container = Container ? (
+			<Container {...restProps}>
+				{React.Children.map(children, (child) =>{
+					return child ? React.cloneElement(child, {
+						...restProps,
+						activateByKey: this.activateByKey,
+						activeKey: this.state.activeKey,
+						noLabels: !propLabel,
+						count: values.length,
+						labels: labels,
+						items: values
+					}) : null;
+				})}
+			</Container>
+		) : null;
 		return container;
 	}
 }

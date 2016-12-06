@@ -16,15 +16,17 @@ export class List extends Component{
 	};
 	render() {
 		const { container: Container, component: Component, items, activeKey, ...restProps } = this.props;
-		return (
+		return Container ? (
 			<Container {...restProps}>
 				<SwipeableViews index={activeKey} onChangeIndex={this.handleChangeIndex}>
-				{items.map((itemData, keyId)=>(
-					<Component { ...restProps } key={keyId} keyId={keyId} data={itemData} />
-				))}
+				{items.map((itemData, keyId) => {
+					return Component ?
+						<Component { ...restProps } key={keyId} keyId={keyId} data={itemData} />
+					: null;
+				})}
 				</SwipeableViews>
 			</Container>
-		);
+		) : null;
 	}
 }
 
@@ -32,27 +34,27 @@ export const Nav = ({
 	container: Container, component: Component, labels, items, noLabels, ...restProps
 }) => {
 	labels = noLabels?items:labels;
-	return (
+	return Container ? (
 		<Container {...restProps}>
-			{labels.map((data, keyId)=>
-				React.createElement(Component, {
+			{labels.map((data, keyId)=> {
+				return Component ? React.createElement(Component, {
 					...restProps,
 					key: keyId,
 					keyId: keyId,
 					data: data
-				})
-			)}
+				}) : null;
+			})}
 		</Container>
-	)
+	) : null;
 };
 
 export const Buttons = ({
 	container: Container, component: Component, activeKey, activateByKey, count, ...restProps
 }) => {
-	return (
+	return Container ? (
 		<Container {...restProps}>
-			{["prev", "next"].map((dir, keyId)=>
-				React.createElement(Component, {
+			{["prev", "next"].map((dir, keyId) => {
+				return Component ? React.createElement(Component, {
 					...restProps,
 					key: keyId,
 					keyId: keyId,
@@ -69,8 +71,8 @@ export const Buttons = ({
 					prev: dir === 'prev',
 					dir: dir,
 					disabled: (activeKey === 0 && dir === 'prev') || (activeKey === count - 1 && dir === 'next')
-				})
-			)}
+				}) : null;
+			})}
 		</Container>
-	)
+	) : null;
 };
