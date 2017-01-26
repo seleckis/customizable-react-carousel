@@ -17,6 +17,6 @@ export default [
 	},
 	{
 		label: "5",
-		value: "Five"
+		value: "Five<br>Five<br>Five<br>Five<br>Five<br>Five"
 	},
 ];
