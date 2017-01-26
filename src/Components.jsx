@@ -6,7 +6,8 @@ export class List extends Component{
 		container: PropTypes.func,
 		component: PropTypes.func,
 		items: PropTypes.array,
-		activateByKey: PropTypes.func
+		activateByKey: PropTypes.func,
+		svProps: PropTypes.object,
 	};
 	constructor(props){
 		super(props);
@@ -15,10 +16,10 @@ export class List extends Component{
 		this.props.activateByKey(index);
 	};
 	render() {
-		const { container: Container, component: Component, items, activeKey, slideStyle, ...restProps } = this.props;
+		const { container: Container, component: Component, items, activeKey, svProps, ...restProps } = this.props;
 		return Container ? (
 			<Container {...restProps}>
-				<SwipeableViews index={activeKey} onChangeIndex={this.handleChangeIndex} slideStyle={slideStyle}>
+				<SwipeableViews index={activeKey} onChangeIndex={this.handleChangeIndex} {...svProps}>
 				{items.map((itemData, keyId) => {
 					return Component ?
 						<Component { ...restProps } key={keyId} keyId={keyId} data={itemData} />
