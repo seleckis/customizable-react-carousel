@@ -12,6 +12,9 @@ export class List extends Component{
 	constructor(props){
 		super(props);
 	}
+	handleChangeIndex = (index) => {
+		this.props.activateByKey(index);
+	};
 	render() {
 		const { container: Container, component: Component, items, activeKey, svProps, ...restProps } = this.props;
 		return Container ? (
