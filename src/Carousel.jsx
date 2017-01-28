@@ -52,7 +52,7 @@ export default class Carousel extends Component {
 	setRefsHeight(key){
 		if(this.componentRefs[`ref-${key}`]) {
 			this.setState({
-				activeSlideHeight: this.componentRefs[`ref-${key}`].offsetHeight
+				activeSlideHeight: this.componentRefs[`ref-${key}`]
 			});
 		}
 	}

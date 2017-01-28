@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
-
+import Measure from 'react-measure';
 import { Carousel, CarouselNav, CarouselButtons, CarouselList } from '../../src';
 import data from './data';
 
@@ -25,9 +25,15 @@ const SliderItem = styled.div/*styledcss*/`
 `;
 
 const SliderListItem = ({ keyId, activeKey, data, setRef }) => (
-	<SliderItem innerRef={r => setRef(keyId, r)}
-				isActive={keyId === activeKey} isAfterActive={keyId > activeKey}
-				dangerouslySetInnerHTML={{ __html: data.value }} />
+	<Measure>
+    	{ dimensions => {
+			setRef(keyId, dimensions.height);
+			return (
+				<SliderItem isActive={keyId === activeKey} isAfterActive={keyId > activeKey}
+							dangerouslySetInnerHTML={{ __html: data.value }} />
+			)
+		}}
+	</Measure>
 );
 
 const SliderNav = ({ children }) => (
