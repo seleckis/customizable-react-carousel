@@ -24,8 +24,8 @@ const SliderItem = styled.div/*styledcss*/`
 	flex-grow: 1;
 `;
 
-const SliderListItem = ({ keyId, activeKey, data, setRef }) => (
-	<SliderItem innerRef={r => setRef(keyId, r)}
+const SliderListItem = ({ keyId, activeKey, data/*, setRef */ }) => (
+	<SliderItem /* innerRef={r => setRef(keyId, r)} */
 				isActive={keyId === activeKey} isAfterActive={keyId > activeKey}
 				dangerouslySetInnerHTML={{ __html: data.value }} />
 );
