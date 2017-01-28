@@ -12,6 +12,7 @@ const Slider = ({ children }) => (
 
 const SliderList = styled.div`
 	overflow: hidden;
+	height: ${props => props.activeSlideHeight}px;
 `;
 
 const SliderItem = styled.div`
@@ -23,8 +24,10 @@ const SliderItem = styled.div`
 	flex-grow: 1;
 `;
 
-const SliderListItem = ({ keyId, activeKey, data }) => (
-	<SliderItem isActive={keyId === activeKey} isAfterActive={keyId > activeKey} dangerouslySetInnerHTML={{ __html: data.value }}/>
+const SliderListItem = ({ keyId, activeKey, data, setRef }) => (
+	<SliderItem innerRef={r => setRef(keyId, r)}
+				isActive={keyId === activeKey} isAfterActive={keyId > activeKey}
+				dangerouslySetInnerHTML={{ __html: data.value }} />
 );
 
 const SliderNav = ({ children }) => (
@@ -69,14 +72,14 @@ export default class App extends Component {
 	render(){
 		// console.log(CarouselButtons);
 		const svProps = {
-			animateHeight: true
+			// animateHeight: true
 		};
 		return (
 			<div className="root">
 				<h1>Customizable React Carousel Example</h1>
 				<p>A set of React components to build customizable carousel</p>
 				<div className="content">
-					<Carousel data={data} container={Slider} svProps={svProps}>
+					<Carousel data={data} container={Slider} svProps={svProps} changeHeightAfterSwipe={true}>
 						<CarouselNav container={SliderNav} component={SliderNavItem} />
 						<CarouselList container={SliderList} component={SliderListItem} />
 						<CarouselButtons container={SliderButtons} component={SliderButtonsItem} />
