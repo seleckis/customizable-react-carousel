@@ -8,16 +8,21 @@ export default class Carousel extends Component {
 		children: PropTypes.oneOfType([
 			PropTypes.element,
 			PropTypes.array
-		])
+		]),
+		changeHeightAfterSwipe: PropTypes.bool,
+		handleSwitch: PropTypes.func,
 	};
+	componentRefs = {};
 	constructor(props){
 		super(props);
 		this.state = {
 			activeKey: this.props.activeKey || 0,
 			itemsCount: 0,
 			defKey: 0,
+			activeSlideHeight: -1
 		}
 		this.activateByKey = this.activateByKey.bind(this);
+		this.setRef = this.setRef.bind(this);
 	}
 	componentWillMount(){
 		this.setState({
@@ -29,11 +34,15 @@ export default class Carousel extends Component {
 	}
 	activateByKey(key, e){
 		this.setState({
-			activeKey: key < this.state.itemsCount ? key >= 0 ? key : this.state.itemsCount-1 : 0
+			activeKey: key < this.state.itemsCount ? key >= 0 ? key : this.state.itemsCount-1 : 0,
+			activeSlideHeight: this.componentRefs[`ref-${key}`].offsetHeight
 		});
 		if(this.props.handleSwitch){
 			this.props.handleSwitch(e, key);
 		}
+	}
+	setRef(keyId, r){
+		this.componentRefs[`ref-${keyId}`] =  r;
 	}
 	render(){
 
@@ -49,6 +58,8 @@ export default class Carousel extends Component {
 					return child ? React.cloneElement(child, {
 						...restProps,
 						activateByKey: this.activateByKey,
+						setRef: this.setRef,
+						activeSlideHeight: this.state.activeSlideHeight,
 						activeKey: this.state.activeKey,
 						noLabels: !propLabel,
 						count: values.length,
