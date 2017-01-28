@@ -47,8 +47,8 @@ export default class Carousel extends Component {
 	render(){
 
 		let { container: Container, children, data, propLabel, propValue, ...restProps } = this.props;
-		let labels = propLabel?data.map((item)=>item[propLabel] || item.label):null;
-		let values = propValue?data.map((item)=>item[propValue] || item.value):data;
+		let labels = propLabel ? data.map((item) => item[propLabel] || item.label) : null;
+		let values = propValue ? data.map((item) => item[propValue] || item.value) : data;
 
 		children = Array.isArray(children) ? children : [children];
 
