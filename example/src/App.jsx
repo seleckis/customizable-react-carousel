@@ -10,12 +10,12 @@ const Slider = ({ children }) => (
 	</div>
 );
 
-const SliderList = styled.div`
+const SliderList = styled.div/*styledcss*/`
 	overflow: hidden;
 	height: ${props => props.activeSlideHeight}px;
 `;
 
-const SliderItem = styled.div`
+const SliderItem = styled.div/*styledcss*/`
 	min-height: 100px;
 	text-align: center;
 	line-height: 100px;
