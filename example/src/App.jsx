@@ -18,14 +18,14 @@ const SliderList = styled.div/*styledcss*/`
 const SliderItem = styled.div/*styledcss*/`
 	min-height: 100px;
 	text-align: center;
-	line-height: 100px;
+	padding: 30px;
 	border: 5px solid #eee;
 	box-sizing: border-box;
 	flex-grow: 1;
 `;
 
-const SliderListItem = ({ keyId, activeKey, data/*, setRef */ }) => (
-	<SliderItem /* innerRef={r => setRef(keyId, r)} */
+const SliderListItem = ({ keyId, activeKey, data, setRef }) => (
+	<SliderItem innerRef={r => setRef(keyId, r)}
 				isActive={keyId === activeKey} isAfterActive={keyId > activeKey}
 				dangerouslySetInnerHTML={{ __html: data.value }} />
 );
