@@ -21,6 +21,7 @@ export default class Carousel extends Component {
 			defKey: 0,
 			activeSlideHeight: -1
 		}
+		this.handleResize = this.handleResize.bind(this);
 		this.activateByKey = this.activateByKey.bind(this);
 		this.setRef = this.setRef.bind(this);
 	}
@@ -31,6 +32,10 @@ export default class Carousel extends Component {
 	}
 	componentDidMount(){
 		this.activateByKey(this.state.activeKey, null);
+		window && window.addEventListener('resize', this.handleResize);
+	}
+	componentWillUnmount() {
+		window && window.removeEventListener('resize', this.handleResize);
 	}
 	activateByKey(key, e){
 		this.setState({
@@ -39,6 +44,12 @@ export default class Carousel extends Component {
 		if(this.props.handleSwitch) {
 			this.props.handleSwitch(e, key);
 		}
+		this.setRefsHeight(key);
+	}
+	handleResize(){
+		this.setRefsHeight(this.state.activeKey);
+	}
+	setRefsHeight(key){
 		if(this.componentRefs[`ref-${key}`]) {
 			this.setState({
 				activeSlideHeight: this.componentRefs[`ref-${key}`].offsetHeight
