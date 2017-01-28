@@ -35,10 +35,14 @@ export default class Carousel extends Component {
 	activateByKey(key, e){
 		this.setState({
 			activeKey: key < this.state.itemsCount ? key >= 0 ? key : this.state.itemsCount-1 : 0,
-			activeSlideHeight: this.componentRefs[`ref-${key}`].offsetHeight
 		});
-		if(this.props.handleSwitch){
+		if(this.props.handleSwitch) {
 			this.props.handleSwitch(e, key);
+		}
+		if(this.componentRefs[`ref-${key}`]) {
+			this.setState({
+				activeSlideHeight: this.componentRefs[`ref-${key}`].offsetHeight
+			});
 		}
 	}
 	setRef(keyId, r){
