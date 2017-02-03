@@ -17,18 +17,12 @@ export default class Carousel extends Component {
 		super(props);
 		this.state = {
 			activeKey: this.props.activeKey || 0,
-			itemsCount: 0,
 			defKey: 0,
 			activeSlideHeight: -1
 		}
 		this.handleResize = this.handleResize.bind(this);
 		this.activateByKey = this.activateByKey.bind(this);
 		this.setRef = this.setRef.bind(this);
-	}
-	componentWillMount(){
-		this.setState({
-			itemsCount: this.props.data.length
-		});
 	}
 	componentDidMount(){
 		this.activateByKey(this.state.activeKey, null);
@@ -38,8 +32,9 @@ export default class Carousel extends Component {
 		window && window.removeEventListener('resize', this.handleResize);
 	}
 	activateByKey(key, e){
+		const itemsCount = this.props.data.length;
 		this.setState({
-			activeKey: key < this.state.itemsCount ? key >= 0 ? key : this.state.itemsCount-1 : 0,
+			activeKey: key < itemsCount ? key >= 0 ? key : itemsCount - 1 : 0,
 		});
 		if(this.props.handleSwitch) {
 			this.props.handleSwitch(e, key);
