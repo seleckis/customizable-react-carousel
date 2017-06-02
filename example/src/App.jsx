@@ -24,13 +24,14 @@ const SliderItem = styled.div/*styledcss*/`
 	flex-grow: 1;
 `;
 
-const SliderListItem = ({ keyId, activeKey, data, setRef }) => (
+const SliderListItem = ({ keyId, activeKey, data, setRef, activateByKey }) => (
 	<Measure>
     	{ dimensions => {
 			setRef(keyId, dimensions.height);
 			return (
-				<SliderItem isActive={keyId === activeKey} isAfterActive={keyId > activeKey}
-							dangerouslySetInnerHTML={{ __html: data.value }} />
+				<SliderItem isActive={keyId === activeKey} isAfterActive={keyId > activeKey}>
+					<div dangerouslySetInnerHTML={{ __html: data.value }} onClick={activateByKey.bind(null, keyId+1)} />
+				</SliderItem>
 			)
 		}}
 	</Measure>
