@@ -13,13 +13,13 @@ export default class Carousel extends Component {
 		changeHeightAfterSwipe: PropTypes.bool,
 		handleSwitch: PropTypes.func,
 		activeKey: PropTypes.number,
+		resetKey: PropTypes.bool,
 	};
 	componentRefs = {};
 	constructor(props){
 		super(props);
 		this.state = {
 			activeKey: props.activeKey || 0,
-			defKey: 0,
 			activeSlideHeight: -1
 		}
 		this.handleResize = this.handleResize.bind(this);
@@ -30,8 +30,9 @@ export default class Carousel extends Component {
 		this.activateByKey(this.state.activeKey, null);
 		window && window.addEventListener('resize', this.handleResize);
 	}
-	componentWillReceiveProps({activeKey}) {
-		if(activeKey !== this.props.activeKey) {
+	componentWillReceiveProps({resetKey}) {
+		const {activeKey} = this.props;
+		if(resetKey) {
 			this.activateByKey(activeKey, null);
 		}
 	}
